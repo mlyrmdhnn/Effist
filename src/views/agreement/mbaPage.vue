@@ -23,17 +23,25 @@ const columnsGancit = [
 
 // data dari api, ntr bisa berubah
 const hasilGancit = ref([])
+const pagination = ref({})
+const currentPage = ref(1)
 
-// ini api nya juga nanti ada 2 dari gancit dan juga kokas, ini baru make cnth aja
-axios.get('http://127.0.0.1:8000/api/mba')
-  .then(res => hasilGancit.value = res.data.data)
+const gancitLoadData = (page = 1) => {
+  axios.get(`/mba?page=${page}`).then(res => {
+    hasilGancit.value = res.data.data.data
+    pagination.value = res.data.data
+    currentPage.value = res.data.data.current_page
+  })
+}
 
+gancitLoadData()
 </script>
 <template>
   <AdminLayout>
     <TableTemplate title="Gandaria City Office Tower" :icon="Building2" :buttons="gancitButtons"
-      :columns="columnsGancit" :rows="hasilGancit" options="Detail MBA" />
+      :columns="columnsGancit" :pagination="pagination" :onPageChange="gancitLoadData" :rows="hasilGancit"
+      options="Detail MBA" />
     <TableTemplate title="Kota Kasablanka" :icon="Building2" :buttons="gancitButtons" :columns="columnsGancit"
-      :rows="hasilGancit" options="Detail MBA" />
+      :pagination="pagination" :onPageChange="gancitLoadData" :rows="hasilGancit" options="Detail MBA" />
   </AdminLayout>
 </template>

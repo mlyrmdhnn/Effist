@@ -20,8 +20,18 @@ const gancitColumns = [
 ]
 
 const hasilGancit = ref([])
+const pagination = ref({})
+const currentPage = ref(1)
 
-axios.get('http://127.0.0.1:8000/api/doa').then(res => hasilGancit.value = res.data.data)
+const gancitLoadData = (page = 1) => {
+  axios.get(`/doa?page=${page}`).then(res => {
+    hasilGancit.value = res.data.data.data
+    pagination.value = res.data.data
+    currentPage.value = res.data.data.current_page
+  })
+}
+
+gancitLoadData()
 
 
 
@@ -29,8 +39,10 @@ axios.get('http://127.0.0.1:8000/api/doa').then(res => hasilGancit.value = res.d
 <template>
   <AdminLayout>
     <TableTemplate title="Gandaria City Office Tower" :icon="Building2" :columns="gancitColumns"
-      :buttons="gancitButtons" :rows="hasilGancit" options="Detail DOA | Send DOA | Update" />
+      :buttons="gancitButtons" :pagination="pagination" :onPageChange="gancitLoadData" :rows="hasilGancit"
+      options="Detail DOA | Send DOA | Update" />
     <TableTemplate title="Kota Kasablanka" :icon="Building2" :columns="gancitColumns" :buttons="gancitButtons"
-      :rows="hasilGancit" options="Detail DOA | Send DOA | Update" />
+      :rows="hasilGancit" :pagination="pagination" :onPageChange="gancitLoadData"
+      options="Detail DOA | Send DOA | Update" />
   </AdminLayout>
 </template>

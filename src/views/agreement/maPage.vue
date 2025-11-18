@@ -21,17 +21,26 @@ const columnsGancit = [
 ]
 
 const hasilGancit = ref([])
-axios.get('http://127.0.0.1:8000/api/ma').then(res => {
-  hasilGancit.value = res.data.data
-  console.log(res.data.data)
-})
+const pagination = ref({})
+const currentPage = ref(1)
+
+const gancitLoadData = (page = 1) => {
+  axios.get(`/ma?page=${page}`).then(res => {
+    hasilGancit.value = res.data.data.data
+    pagination.value = res.data.data
+    currentPage.value = res.data.data.current_page
+  })
+}
+
+gancitLoadData()
 
 </script>
 <template>
   <AdminLayout>
     <TableTemplate title="Gandaria City Office Tower" :icon="Building2" :columns="columnsGancit"
-      :buttons="gancitButtons" :rows="hasilGancit" options="Detail MA" />
-    <TableTemplate title="Kota Kasablanka" :icon="Building2" :columns="columnsGancit" :buttons="gancitButtons"
-      :rows="hasilGancit" options="Detail MA" />
+      :buttons="gancitButtons" :pagination="pagination" :onPageChange="gancitLoadData" :rows="hasilGancit"
+      options="Detail MA" />
+    <TableTemplate title="Kota Kasablanka" :pagination="pagination" :onPageChange="gancitLoadData" :icon="Building2"
+      :columns="columnsGancit" :buttons="gancitButtons" :rows="hasilGancit" options="Detail MA" />
   </AdminLayout>
 </template>

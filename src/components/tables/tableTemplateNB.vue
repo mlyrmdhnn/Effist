@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 <template>
   <section class="bg-gray-100 dark:bg-gray-900 p-3 sm:p-5">
-    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+    <div class="mx-auto max-w-screen-xl px-4">
       <!-- Start coding here -->
       <div class="bg-blue-100 w-full h-10 flex items-center p-2 rounded-t gap-2">
         <span class="text-blue-400">
