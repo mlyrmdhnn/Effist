@@ -172,8 +172,7 @@ const menuGroups = [{
     {
       icon: HomeIcon,
       name: "Dashboard",
-      path: '/'
-      // subItems: [{ name: "Dashboard", path: "/", pro: false }],
+      path: '/dashboard'
     },
     {
       icon: FlagIcon,
@@ -195,8 +194,8 @@ const menuGroups = [{
       icon: FolderIcon,
       name: "Master Data",
       subItems: [
-        { name: "testing 1", path: '/as', pro: false },
-        { name: "testing 2", path: '/as', pro: false },
+        { name: "Building", path: '/admin/building', pro: false },
+        { name: "Rooms", path: '/admin/room', pro: false },
         { name: "testing 3", path: '/as', pro: false },
       ]
     },

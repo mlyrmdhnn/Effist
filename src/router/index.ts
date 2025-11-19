@@ -58,13 +58,32 @@ const router = createRouter({
       },
     },
     {
-      path: '/',
-      name: 'Ecommerce',
-      component: () => import('../views/Dashboard.vue'),
+      path: '/admin/building',
+      name: 'Building',
+      component: () => import('../views/masterData/buildingPage.vue'),
       meta: {
-        title: 'eCommerce Dashboard',
+        title: 'Admin - Building',
       },
     },
+    {
+      path: '/admin/room',
+      name: 'Rooms',
+      component: () => import('../views/masterData/roomsPage.vue'),
+      meta: {
+        title: 'Admin - Room',
+      },
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: () => import('../views/Dashboard.vue'),
+      meta: {
+        title: 'Admin - Dashboard',
+      },
+    },
+
+    // =========================================================================
+
     {
       path: '/calendar',
       name: 'Calendar',
@@ -174,17 +193,8 @@ const router = createRouter({
         title: '404 Error',
       },
     },
-
     {
-      path: '/signin',
-      name: 'Signin',
-      component: () => import('../views/Auth/Signin.vue'),
-      meta: {
-        title: 'Signin',
-      },
-    },
-    {
-      path: '/signup',
+      path: '/',
       name: 'Signup',
       component: () => import('../views/Auth/Signup.vue'),
       meta: {
