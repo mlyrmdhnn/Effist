@@ -196,21 +196,33 @@ const menuGroups = [{
       subItems: [
         { name: "Building", path: '/admin/building', pro: false },
         { name: "Rooms", path: '/admin/room', pro: false },
-        { name: "testing 3", path: '/as', pro: false },
+        { name: "Additional Service", path: '/admin/additional_service', pro: false },
+        { name: 'Meeting Room', path: '/admin/meeting_room', pro: false },
+        { name: 'Phone', path: '/admin/phones', pro: false },
+        { name: 'Extention', path: '/admin/extention', pro: false },
+        { name: 'Domicile Charge', path: '/admin/domicile_charge', pro: false }
       ]
     },
     {
       name: "Invoices",
       icon: BankNoteIcon,
-      subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+      subItems: [
+        { name: 'Invoice Serviced Office', path: '/admin/invoice_soa', pro: false },
+        { name: 'Invoice Virtual Office', path: '/admin/invoice_voa', pro: false },
+        { name: 'Invoice Meeting Room', path: '/admin/invoice_mba', pro: false },
+        { name: 'Invoice Day Office', path: '/admin/invoice_doa', pro: false },
+        { name: 'Invoice Charger Slip', path: '/admin/invoice_charger_slip', pro: false }
+      ],
     },
     {
       name: "Customers",
       icon: UserGroupIcon,
-      subItems: [
-        { name: "Black Page", path: "/blank", pro: false },
-        { name: "404 Page", path: "/error-404", pro: false },
-      ],
+      path: '/admin/customers',
+      meta: {
+        title: 'Admin - Customers',
+        requiresAuth: true
+      }
+
     },
 
   ],

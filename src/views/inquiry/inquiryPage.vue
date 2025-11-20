@@ -24,7 +24,11 @@ const columns = [
 ]
 
 const inquiryLoadData = (page = 1) => {
-  axios.get(`/inquiry?page=${page}`).then(res => {
+  axios.get(`/inquiry?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res => {
     inquiry.value = res.data.data.data
     pagination.value = res.data.data
     currentPage.value = res.data.data.current_page

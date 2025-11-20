@@ -5,10 +5,6 @@ import AdminLayout from '@/components/layout/AdminLayout.vue';
 import TableTemplate from '@/components/tables/tableTemplate.vue';
 import { Building2 } from 'lucide-vue-next';
 
-const buttons = [
-  { label: " ok" }
-]
-
 const columns = [
   { key: 'building', label: 'Building Name' },
   { key: 'name', label: 'Room Name' },
@@ -23,7 +19,11 @@ const pagination = ref({})
 const currentPage = ref(1)
 
 const roomLoadData = (page = 1) => {
-  axios.get(`/rooms?page=${page}`).then(res => {
+  axios.get(`/rooms?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res => {
     room.value = res.data.data.data
     pagination.value = res.data.data
     currentPage.value = res.data.data.current_page

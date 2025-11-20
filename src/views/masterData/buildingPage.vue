@@ -14,7 +14,11 @@ const columns = [
 
 const dataApi = ref([])
 
-axios.get('/building').then(res => {
+axios.get('/building', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  }
+}).then(res => {
   dataApi.value = res.data.data
   console.log(res.data)
 })

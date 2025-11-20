@@ -15,6 +15,7 @@ const router = createRouter({
       component: InquiryPage,
       meta: {
         title: 'Inquiry',
+        requiresAuth: true,
       },
     },
     {
@@ -23,6 +24,7 @@ const router = createRouter({
       component: SoaPage,
       meta: {
         title: 'Serviced Office',
+        requiresAuth: true,
       },
     },
     {
@@ -31,14 +33,16 @@ const router = createRouter({
       component: VoaPage,
       meta: {
         title: 'Virtual Office',
+        requiresAuth: true,
       },
     },
     {
       path: '/admin/mba',
-      name: 'Meeting Room',
+      name: 'Meeting Room Agreement',
       component: () => import('../views/agreement/mbaPage.vue'),
       meta: {
         title: 'Meeting Room',
+        requiresAuth: true,
       },
     },
     {
@@ -47,6 +51,7 @@ const router = createRouter({
       component: () => import('../views/agreement/maPage.vue'),
       meta: {
         title: 'Membership',
+        requiresAuth: true,
       },
     },
     {
@@ -55,6 +60,7 @@ const router = createRouter({
       component: () => import('../views/agreement/doaPage.vue'),
       meta: {
         title: 'Day Office',
+        requiresAuth: true,
       },
     },
     {
@@ -63,6 +69,7 @@ const router = createRouter({
       component: () => import('../views/masterData/buildingPage.vue'),
       meta: {
         title: 'Admin - Building',
+        requiresAuth: true,
       },
     },
     {
@@ -71,6 +78,16 @@ const router = createRouter({
       component: () => import('../views/masterData/roomsPage.vue'),
       meta: {
         title: 'Admin - Room',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/additional_service',
+      name: 'Additional Sercice',
+      component: () => import('../views/masterData/additionalServicePage.vue'),
+      meta: {
+        title: 'Admin - Additional Service',
+        requiresAuth: true,
       },
     },
     {
@@ -79,6 +96,106 @@ const router = createRouter({
       component: () => import('../views/Dashboard.vue'),
       meta: {
         title: 'Admin - Dashboard',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/meeting_room',
+      name: 'Meeting Room',
+      component: () => import('../views/masterData/meetingRoomPage.vue'),
+      meta: {
+        title: 'Admin - Meeting Room',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/phones',
+      name: 'Phones',
+      component: () => import('../views/masterData/phonesPage.vue'),
+      meta: {
+        title: 'Admin - Phones',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/extention',
+      name: 'Extention',
+      component: () => import('../views/masterData/extentionPage.vue'),
+      meta: {
+        title: 'Admin - Extention',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/domicile_charge',
+      name: 'Domicile Charge',
+      component: () => import('../views/masterData/domicileCharge.vue'),
+      meta: {
+        title: 'Admin - Domicile Charge',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/invoice_soa',
+      name: 'Invoice SOA',
+      component: () => import('../views/invoice/invoiceSoaPage.vue'),
+      meta: {
+        title: 'Admin - invoice',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/invoice_voa',
+      name: 'Invoice VOA',
+      component: () => import('../views/invoice/invoiceVoaPage.vue'),
+      meta: {
+        title: 'Admin - Invoice',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/invoice_mba',
+      name: 'Invoice MBA',
+      component: () => import('../views/invoice/invoiceMbaPage.vue'),
+      meta: {
+        title: 'Admin - Invoice',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/invoice_doa',
+      name: 'Invoice DOA',
+      component: () => import('../views/invoice/invoiceDoaPage.vue'),
+      meta: {
+        title: 'Admin - Invoice',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/invoice_charger_slip',
+      name: 'Invoice Charger Slip',
+      component: () => import('../views/invoice/invoiceChargerSlipPage.vue'),
+      meta: {
+        title: 'Admin - Invoice',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/admin/customers',
+      name: 'Customers',
+      component: () => import('../views/customer/customerPage.vue'),
+      meta: {
+        title: 'Admin - Customers',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/',
+      name: 'Signup',
+      component: () => import('../views/Auth/Signup.vue'),
+      meta: {
+        title: 'Signup',
+        guest: true,
       },
     },
 
@@ -193,20 +310,22 @@ const router = createRouter({
         title: '404 Error',
       },
     },
-    {
-      path: '/',
-      name: 'Signup',
-      component: () => import('../views/Auth/Signup.vue'),
-      meta: {
-        title: 'Signup',
-      },
-    },
   ],
 })
 
 export default router
 
 router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token')
+
+  if (to.meta.requiresAuth && !token) {
+    return next('/')
+  }
+
+  if (to.meta.guest && token) {
+    return next('/dashboard')
+  }
+
   document.title = `Effist |  ${to.meta.title}`
   next()
 })

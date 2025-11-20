@@ -27,7 +27,11 @@ const pagination = ref({})
 const currentPage = ref(1)
 
 const gancitLoadData = (page = 1) => {
-  axios.get(`/mba?page=${page}`).then(res => {
+  axios.get(`/mba?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res => {
     hasilGancit.value = res.data.data.data
     pagination.value = res.data.data
     currentPage.value = res.data.data.current_page

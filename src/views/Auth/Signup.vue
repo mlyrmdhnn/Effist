@@ -106,14 +106,13 @@ const handleSubmit = () => {
     .then(res => {
       textColor.value = 'text-green-500'
       msg.value = res.data.msg
+      localStorage.setItem('token', res.data.token)
       setTimeout(() => {
         redirectToDashboard()
-      }, 1000);
+      }, 200);
     }).catch(e => {
       textColor.value = 'text-red-500'
       msg.value = e.response.data.msg
     })
-
-
 }
 </script>

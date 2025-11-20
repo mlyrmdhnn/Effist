@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/block-lang -->
 <script setup>
 import AdminLayout from '@/components/layout/AdminLayout.vue';
 import TableTemplate from '@/components/tables/tableTemplate.vue';
@@ -25,7 +26,11 @@ const pagination = ref({})
 const currentPage = ref(1)
 
 const gancitLoadData = (page = 1) => {
-  axios.get(`/ma?page=${page}`).then(res => {
+  axios.get(`/ma?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res => {
     hasilGancit.value = res.data.data.data
     pagination.value = res.data.data
     currentPage.value = res.data.data.current_page

@@ -9,7 +9,14 @@
         <slot></slot>
       </div>
       <!-- Footer -->
-
+      <!-- <footer>
+        <div class="text-center py-2">
+          Copyright <a target="_blank" href="https://effist.com/" class="text-blue-500 hover:underline">
+            Effist Suite Office</a> 2025.
+          All
+          Rights Reserved.
+        </div>
+      </footer> -->
     </div>
   </div>
 </template>
