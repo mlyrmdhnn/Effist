@@ -17,8 +17,8 @@ const hasilGancit = ref([])
 const paginationGancit = ref({})
 const currentPageGancit = ref(1)
 
-const loadDataGancit = (page = 1) => {
-  axios.get(`/customers?page=${page}`, {
+const loadDataGancit = (page = 1, search = '') => {
+  axios.get(`/customers?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -31,14 +31,21 @@ const loadDataGancit = (page = 1) => {
 
 loadDataGancit()
 
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  loadDataGancit(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
     <TableTemplate :icon="Building2" title="Customers Gandaria 8 Office Tower" :columns="columns"
-      options="Delete | Detail | Update" :pagination="paginationGancit" :onPageChange="loadDataGancit"
-      :rows="hasilGancit" />
+      options="Delete | Detail | Update" @search="searchGancit" :pagination="paginationGancit"
+      :onPageChange="loadDataGancit" :rows="hasilGancit" />
     <TableTemplate :icon="Building2" title="Customers Kota Kasablanka Tower" :columns="columns"
-      options="Delete | Detail | Update" :pagination="paginationGancit" :onPageChange="loadDataGancit"
-      :rows="hasilGancit" />
+      options="Delete | Detail | Update" @search="searchGancit" :pagination="paginationGancit"
+      :onPageChange="loadDataGancit" :rows="hasilGancit" />
   </AdminLayout>
 </template>

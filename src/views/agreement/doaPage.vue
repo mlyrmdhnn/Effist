@@ -23,8 +23,8 @@ const hasilGancit = ref([])
 const pagination = ref({})
 const currentPage = ref(1)
 
-const gancitLoadData = (page = 1) => {
-  axios.get(`/doa?page=${page}`, {
+const gancitLoadData = (page = 1, search = "") => {
+  axios.get(`/doa?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -37,16 +37,22 @@ const gancitLoadData = (page = 1) => {
 
 gancitLoadData()
 
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  gancitLoadData(1, keyword.value)
+}
 
 
 </script>
 <template>
   <AdminLayout>
     <TableTemplate title="Gandaria City Office Tower" :icon="Building2" :columns="gancitColumns"
-      :buttons="gancitButtons" :pagination="pagination" :onPageChange="gancitLoadData" :rows="hasilGancit"
-      options="Detail DOA | Send DOA | Update" />
+      :buttons="gancitButtons" :pagination="pagination" @search="searchGancit" :onPageChange="gancitLoadData"
+      :rows="hasilGancit" options="Detail DOA | Send DOA | Update" />
     <TableTemplate title="Kota Kasablanka" :icon="Building2" :columns="gancitColumns" :buttons="gancitButtons"
-      :rows="hasilGancit" :pagination="pagination" :onPageChange="gancitLoadData"
+      :rows="hasilGancit" :pagination="pagination" @search="searchGancit" :onPageChange="gancitLoadData"
       options="Detail DOA | Send DOA | Update" />
   </AdminLayout>
 </template>

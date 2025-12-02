@@ -26,8 +26,8 @@ const hasilGancit = ref([])
 const pagination = ref({})
 const currentPage = ref(1)
 
-const gancitLoadData = (page = 1) => {
-  axios.get(`/mba?page=${page}`, {
+const gancitLoadData = (page = 1, search = "") => {
+  axios.get(`/mba?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -39,13 +39,22 @@ const gancitLoadData = (page = 1) => {
 }
 
 gancitLoadData()
+
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  gancitLoadData(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
     <TableTemplate title="Gandaria City Office Tower" :icon="Building2" :buttons="gancitButtons"
+      :columns="columnsGancit" :pagination="pagination" @search="searchGancit" :onPageChange="gancitLoadData"
+      :rows="hasilGancit" options="Detail MBA" />
+    <TableTemplate title="Kota Kasablanka" :icon="Building2" @search="searchGancit" :buttons="gancitButtons"
       :columns="columnsGancit" :pagination="pagination" :onPageChange="gancitLoadData" :rows="hasilGancit"
       options="Detail MBA" />
-    <TableTemplate title="Kota Kasablanka" :icon="Building2" :buttons="gancitButtons" :columns="columnsGancit"
-      :pagination="pagination" :onPageChange="gancitLoadData" :rows="hasilGancit" options="Detail MBA" />
   </AdminLayout>
 </template>

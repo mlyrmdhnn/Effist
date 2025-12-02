@@ -9,16 +9,17 @@ const columns = [
   { key: 'invoice_no', label: 'Invoce No' },
   { key: 'date_invoice', label: 'Date Invoice' },
   { key: 'due_date', label: 'Due Date' },
-  { key: 'customer', label: 'Customer' }
+  { key: 'customer', label: 'Customer' },
+  { key: 'status', label: 'Status' }
 ]
 
 const hasilGancit = ref([])
 const paginationGancit = ref({})
 const currentPageGancit = ref(1)
 
-const loadDataGancit = (page = 1) => {
+const loadDataGancit = (page = 1, search = '') => {
 
-  axios.get(`/invoice_charger_slip?page=${page}`, {
+  axios.get(`/invoice_charger_slip?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -31,14 +32,21 @@ const loadDataGancit = (page = 1) => {
 
 loadDataGancit()
 
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  loadDataGancit(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
     <TableTemplate :icon="Building2" title="Invoice Charger Slip Gandaria 8 Office Tower" :pagination="paginationGancit"
-      options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit" :columns="columns"
-      :rows="hasilGancit" />
+      @search="searchGancit" options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit"
+      :columns="columns" :rows="hasilGancit" />
     <TableTemplate :icon="Building2" title="Invoice Charger Slip Kota Kasablanka Tower" :pagination="paginationGancit"
-      options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit" :columns="columns"
-      :rows="hasilGancit" />
+      @search="searchGancit" options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit"
+      :columns="columns" :rows="hasilGancit" />
   </AdminLayout>
 </template>

@@ -14,8 +14,8 @@ const hasil = ref([])
 const pagination = ref({})
 const currentPage = ref(1)
 
-const laodData = (page = 1) => {
-  axios.get(`/phones?page=${page}`, {
+const laodData = (page = 1, search = '') => {
+  axios.get(`/phones?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -28,10 +28,17 @@ const laodData = (page = 1) => {
 
 laodData()
 
+const keyword = ref('')
+
+const search = (val) => {
+  keyword.value = val
+  laodData(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
-    <TableTemplate :icon="Building2" label="Phones" :columns="columns" :rows="hasil" options="Update | Delete"
-      :onPageChange="laodData" :pagination="pagination" />
+    <TableTemplate :icon="Building2" label="Phones" @search="search" :columns="columns" :rows="hasil"
+      options="Update | Delete" :onPageChange="laodData" :pagination="pagination" />
   </AdminLayout>
 </template>

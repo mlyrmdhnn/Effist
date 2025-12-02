@@ -15,8 +15,8 @@ const hasil = ref([])
 const pagination = ref({})
 const currentPage = ref(1)
 
-const loadData = (page = 1) => {
-  axios.get(`/domicile_charge?page=${page}`, {
+const loadData = (page = 1, search = '') => {
+  axios.get(`/domicile_charge?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -29,10 +29,17 @@ const loadData = (page = 1) => {
 
 loadData()
 
+const keyword = ref('')
+
+const search = (val) => {
+  keyword.value = val
+  loadData(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
-    <TableTemplate :icon="Building2" label="Domicile Charge" :pagination="pagination" :onPageChange="loadData"
-      :columns="columns" :rows="hasil" options="Update | Delete" />
+    <TableTemplate :icon="Building2" @search="search" label="Domicile Charge" :pagination="pagination"
+      :onPageChange="loadData" :columns="columns" :rows="hasil" options="Update | Delete" />
   </AdminLayout>
 </template>

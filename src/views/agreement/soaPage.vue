@@ -25,8 +25,8 @@ const hasilGancit = ref([])
 const pagination = ref({})
 const currentPage = ref(1)
 
-const gancitLoadData = (page = 1) => {
-  axios.get(`/soa?page=${page}`, {
+const gancitLoadData = (page = 1, search = "") => {
+  axios.get(`/soa?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -39,15 +39,22 @@ const gancitLoadData = (page = 1) => {
 
 gancitLoadData()
 
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  gancitLoadData(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
     <TableTemplate title="Gandaria 8 Office Tower" :icon="Building2" :columns="columns" :buttons="gancitButtons"
-      :rows="hasilGancit" :pagination="pagination" :onPageChange="gancitLoadData" options="
+      :rows="hasilGancit" :pagination="pagination" @search="searchGancit" :onPageChange="gancitLoadData" options="
 	Detail SOA | Send SOA | | Update | Cancel | Delete SOA | Change Payment Method" />
 
     <TableTemplate title="Kota Kasablanka Tower" :icon="Building2" :columns="columns" :buttons="gancitButtons"
-      :rows="hasilGancit" :pagination="pagination" :onPageChange="gancitLoadData" options="
+      :rows="hasilGancit" :pagination="pagination" @search="searchGancit" :onPageChange="gancitLoadData" options="
 	Detail SOA | Send SOA | | Update | Cancel | Delete SOA | Change Payment Method" />
   </AdminLayout>
 </template>

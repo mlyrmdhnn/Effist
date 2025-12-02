@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, watch, ref } from 'vue';
 
 const props = defineProps({
   title: String, // judul header ex : VOA Gandaria City
@@ -9,14 +9,24 @@ const props = defineProps({
   rows: Array, // data dari api
   options: String,
   pagination: Object,
-  onPageChange: Function
+  onPageChange: Function,
+  urlSearch: String
 })
+
+const emits = defineEmits(['search'])
+
+const search = ref('')
+watch(search, (val) => {
+  setTimeout(() => {
+    emits('search', val)
+  }, 500)
+}, { immediate: true })
 
 const handleClick = (link) => {
   if (!link.url) return;
 
   const page = new URL(link.url).searchParams.get("page");
-  props.onPageChange(page);
+  props.onPageChange(page, search.value);
 };
 
 
@@ -48,10 +58,13 @@ const handleClick = (link) => {
                       clip-rule="evenodd" />
                   </svg>
                 </div>
-                <input type="text" id="simple-search"
+                <input type="text" id="simple-search" v-model="search"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Search" required>
               </div>
+              <!-- <button class="ml-4 bg-blue-400 py-1 px-2 rounded text-neutral-100">
+                Search
+              </button> -->
             </form>
           </div>
           <div

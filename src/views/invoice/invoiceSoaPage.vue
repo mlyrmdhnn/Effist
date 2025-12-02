@@ -16,8 +16,8 @@ const hasilGancit = ref([])
 const paginationGancit = ref({})
 const currentPageGancit = ref(1)
 
-const loadDataGancit = (page = 1) => {
-  axios.get(`/invoice_soa?page=${page}`, {
+const loadDataGancit = (page = 1, search = '') => {
+  axios.get(`/invoice_soa?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -30,13 +30,22 @@ const loadDataGancit = (page = 1) => {
 
 loadDataGancit()
 
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  loadDataGancit(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
     <TableTemplate :icon="Building2" title="Invoice SOA Gandaria 8 Office Tower" :pagination="paginationGancit"
-      :onPageChange="loadDataGancit" :columns="columns" :rows="hasilGancit" options="Print | Payment | update" />
+      :onPageChange="loadDataGancit" @search="searchGancit" :columns="columns" :rows="hasilGancit"
+      options="Print | Payment | update" />
 
     <TableTemplate :icon="Building2" title="Invoice SOA Kota Kasablanka Tower" :pagination="paginationGancit"
-      :onPageChange="loadDataGancit" :columns="columns" :rows="hasilGancit" options="Print | Payment | update" />
+      :onPageChange="loadDataGancit" @search="searchGancit" :columns="columns" :rows="hasilGancit"
+      options="Print | Payment | update" />
   </AdminLayout>
 </template>

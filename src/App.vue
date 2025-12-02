@@ -16,7 +16,9 @@ const router = useRouter()
 
 let timeout: any = null
 
-const idle_time = 10 * 60 * 15000
+
+
+const idle_time = 10 * 60 * 1000
 
 const autoLogout = () => {
   localStorage.removeItem('token')
@@ -39,6 +41,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+
   window.removeEventListener('mousemove', resetTimer)
   window.removeEventListener('keydown', resetTimer)
   window.removeEventListener('click', resetTimer)

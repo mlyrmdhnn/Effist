@@ -18,8 +18,8 @@ const room = ref([])
 const pagination = ref({})
 const currentPage = ref(1)
 
-const roomLoadData = (page = 1) => {
-  axios.get(`/rooms?page=${page}`, {
+const roomLoadData = (page = 1, search = "") => {
+  axios.get(`/rooms?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -33,10 +33,17 @@ const roomLoadData = (page = 1) => {
 
 roomLoadData()
 
+const keyword = ref('')
+
+const roomSearch = (val) => {
+  keyword.value = val
+  roomLoadData(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
-    <TableTemplate title="Room" :icon="Building2" :onPageChange="roomLoadData" :pagination="pagination"
-      :columns="columns" :rows="room" options="Update | Delete" />
+    <TableTemplate title="Room" :icon="Building2" @search="roomSearch" :onPageChange="roomLoadData"
+      :pagination="pagination" :columns="columns" :rows="room" options="Update | Delete" />
   </AdminLayout>
 </template>

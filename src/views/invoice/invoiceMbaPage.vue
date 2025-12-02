@@ -2,7 +2,7 @@
 import AdminLayout from '@/components/layout/AdminLayout.vue';
 import TableTemplate from '@/components/tables/tableTemplate.vue';
 import axios from 'axios';
-import { Building2 } from 'lucide-vue-next';
+import { Building2, Search } from 'lucide-vue-next';
 import { ref } from 'vue'
 
 const columns = [
@@ -16,8 +16,8 @@ const hasilGancit = ref([])
 const paginationGancit = ref({})
 const currentPageGancit = ref(1)
 
-const loadDataGancit = (page = 1) => {
-  axios.get(`/invoice_mba?page=${page}`, {
+const loadDataGancit = (page = 1, search = '') => {
+  axios.get(`/invoice_mba?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -30,14 +30,21 @@ const loadDataGancit = (page = 1) => {
 
 loadDataGancit()
 
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  loadDataGancit(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
     <TableTemplate :icon="Building2" title="Invoice MBA Gandaria 8 Office Tower" :pagination="paginationGancit"
-      options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit" :columns="columns"
-      :rows="hasilGancit" />
+      @search="searchGancit" options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit"
+      :columns="columns" :rows="hasilGancit" />
     <TableTemplate :icon="Building2" title="Invoice MBA Kota Kasablanka Tower" :pagination="paginationGancit"
-      options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit" :columns="columns"
-      :rows="hasilGancit" />
+      @search="searchGancit" options="Print | Update | Payment | Delete" :onPageChange="loadDataGancit"
+      :columns="columns" :rows="hasilGancit" />
   </AdminLayout>
 </template>

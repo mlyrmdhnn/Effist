@@ -15,8 +15,8 @@ const hasil = ref([])
 const pagination = ref({})
 const currentPage = ref(1)
 
-const loadData = (page = 1) => {
-  axios.get(`/additional_service?page=${page}`, {
+const loadData = (page = 1, search = "") => {
+  axios.get(`/additional_service?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -24,17 +24,22 @@ const loadData = (page = 1) => {
     hasil.value = res.data.data.data
     pagination.value = res.data.data
     currentPage.value = res.data.data.current_page
-    // console.log(res.data.data.data)
-
   })
 }
 
 loadData()
 
+const keyword = ref('')
+
+const search = (val) => {
+  keyword.value = val
+  loadData(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
-    <TableTemplate title="Additional Services" :icon="Building2" :onPageChange="loadData" :pagination="pagination"
-      :columns="columns" :rows="hasil" options="Update | Delete" />
+    <TableTemplate title="Additional Services" @search="search" :icon="Building2" :onPageChange="loadData"
+      :pagination="pagination" :columns="columns" :rows="hasil" options="Update | Delete" />
   </AdminLayout>
 </template>

@@ -17,8 +17,8 @@ const hasilGancit = ref([])
 const paginationGancit = ref({})
 const currentPageGancit = ref(1)
 
-const loadDataGancit = (page = 1) => {
-  axios.get(`/invoice_doa?page=${page}`, {
+const loadDataGancit = (page = 1, search = '') => {
+  axios.get(`/invoice_doa?page=${page}&search=${search}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -32,13 +32,22 @@ const loadDataGancit = (page = 1) => {
 
 loadDataGancit()
 
+const keyword = ref('')
+
+const searchGancit = (val) => {
+  keyword.value = val
+  loadDataGancit(1, keyword.value)
+}
+
 </script>
 <template>
   <AdminLayout>
 
     <TableTemplate :pagination="paginationGancit" :onPageChange="loadDataGancit" :rows="hasilGancit" :columns="columns"
-      :icon="Building2" title="Invoice  Gandaria 8 Office Tower" options="Print | Payment | Update" />
-    <TableTemplate :pagination="paginationGancit" :onPageChange="loadDataGancit" :rows="hasilGancit" :columns="columns"
-      :icon="Building2" title="Invoice DOA Kota Kasablanka Tower" options="Print | Payment | Update" />
+      @search="searchGancit" :icon="Building2" title="Invoice  Gandaria 8 Office Tower"
+      options="Print | Payment | Update" />
+    <TableTemplate :pagination="paginationGancit" :onPageChange="loadDataGancit" :rows="hasilGancit"
+      @search="searchGancit" :columns="columns" :icon="Building2" title="Invoice DOA Kota Kasablanka Tower"
+      options="Print | Payment | Update" />
   </AdminLayout>
 </template>
